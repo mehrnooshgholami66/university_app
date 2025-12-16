@@ -1,10 +1,15 @@
-from university_app import settings
+from core import constants
+from settings import APP_NAME, DEBUG, DB_ENGINE, DATABASES
 
 def get_app_name():
-    return settings.APP_NAME
+    return APP_NAME
 
 def is_debug():
-    return settings.DEBUG
+    return DEBUG
 
 def get_db_engine():
-    return settings.DB_ENGINE
+    return DB_ENGINE
+
+def get_database_config():
+    return DATABASES[DB_ENGINE]
+
