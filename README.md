@@ -16,6 +16,8 @@ university_app/
 │   ├── __init__.py
 │   ├── config.py
 │   └── database.py
+|   └── constant.py
+|   └── auth.py
 ├── ui_form/
 │   ├── __init__.py
 │   ├── login.py
