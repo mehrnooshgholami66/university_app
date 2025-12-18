@@ -53,3 +53,18 @@ def delete_user(username):
 
     conn.commit()
     conn.close()
+
+def exist_user(username):
+    conn = get_connection()
+    cursor = conn.cursor()
+
+    cursor.execute("""
+        SELECT id
+        FROM users
+        WHERE username = ?
+    """, (username,))
+
+    user_id = cursor.fetchone()
+    conn.close()
+
+    return user_id
