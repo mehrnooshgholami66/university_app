@@ -1,8 +1,11 @@
+from core.config import get_db_engine, get_database_config
 import sqlite3
-from pathlib import Path
 
-BASE_DIR = Path(__file__).resolve().parent.parent
-DB_PATH = BASE_DIR / "db.sqlite3"
 
 def get_connection():
-    return sqlite3.connect(DB_PATH)
+    engine = get_db_engine()
+    config = get_database_config()
+
+    if engine == "sqlite":
+        return sqlite3.connect(config["NAME"])
+
