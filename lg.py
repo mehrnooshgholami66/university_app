@@ -33,7 +33,7 @@ class LoginForm(object):
         self.pushButton_2.setGeometry(QtCore.QRect(220, 110, 92, 28))
         self.pushButton_2.setObjectName("pushButton_2")
         self.pushButton.clicked.connect(self.close_ui)
-        self.pushButton_2.clicked.connect(self.login) #<--------------
+        self.pushButton_2.clicked.connect(self.login)
 
         self.retranslateUi(Form)
         QtCore.QMetaObject.connectSlotsByName(Form)
@@ -50,17 +50,41 @@ class LoginForm(object):
         self.Form.close()
 
     def login(self):
-        pass
+        username = self.lineEdit.text()
+        password = self.lineEdit_2.text()
+        user = authenticate(username, password)
+        if not user:
+            MessageBox.error(self.Form, "wrong username or password")
+            return
+        user_id, role, is_active = user
+        if role == "admin" and is_active == 1:
+            MessageBox.success(self.Form, "login successfully", on_ok=self.show_admin_ui)
+        elif role == "student" and is_active == 1:
+            MessageBox.success(self.Form, "login successfully", on_ok=self.show_student_ui)
+        elif role == "professor" and is_active == 1:
+            MessageBox.success(self.Form, "login successfully", on_ok=self.show_professor_ui)
+        elif role == "student" and is_active == 0:
+            MessageBox.warning(self.Form, "user is blocked . contact admin")
+        elif role == "professor" and is_active == 0:
+            MessageBox.warning(self.Form, "user is blocked . contact admin")
+        else:
+            MessageBox.warning(self.Form, "user is blocked . contact admin")
 
     
     def show_admin_ui(self):
-        pass
+        self.Form.close()
+        self.admin_window = QtWidgets.QWidget()
+        self.admin_ui = AdminForm()
+        self.admin_ui.setupUi(self.admin_window)
+        self.admin_window.show()
         
     def show_student_ui(self):
-        pass
+        self.Form.close()
+        print ("student")
     
     def show_professor_ui(self):
-        pass
+        self.Form.close()
+        print ("professor")
 
 if __name__ == "__main__":
     import sys
