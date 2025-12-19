@@ -5,6 +5,9 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 
 
 class studentFrom(object):
+    """
+    Student UI for download documents
+    """
     def setupUi(self, Dialog):
         Dialog.setObjectName("Dialog")
         Dialog.resize(553, 450)
