@@ -106,9 +106,20 @@ class AdminForm(object):
         self.deleteuserButton.setGeometry(QtCore.QRect(452, 20, 111, 41))
         self.deleteuserButton.setObjectName("deleteuserButton")
         self.horizontalLayout_3.addWidget(self.groupBox_4)
-        #==========================
+        
+        # updated the admin panel as given instructions
 
-        #==========================
+        self.groupBox_2.setDisabled(True)
+        self.groupBox_3.setDisabled(True)
+        self.groupBox_4.setDisabled(True)
+        self.createuser_radio.clicked.connect(self.active_create_user_box)
+        self.blockunblock_radio.clicked.connect(self.active_block_user_box)
+        self.deleteuser_radio.clicked.connect(self.active_delete_user_box)
+        self.createuserButton.clicked.connect(self.create_user)
+        self.commituserButton.clicked.connect(self.block_or_unblock_user)
+        self.deleteuserButton.clicked.connect(self.delete_user)
+
+
 
         self.retranslateUi(Form)
         QtCore.QMetaObject.connectSlotsByName(Form)
@@ -139,13 +150,19 @@ class AdminForm(object):
 
 
     def active_create_user_box(self):
-        pass
+        self.groupBox_2.setDisabled(False)
+        self.groupBox_3.setDisabled(True)
+        self.groupBox_4.setDisabled(True)
 
     def active_block_user_box(self):
-        pass
+        self.groupBox_2.setDisabled(True)
+        self.groupBox_3.setDisabled(False)
+        self.groupBox_4.setDisabled(True)
 
     def active_delete_user_box(self):
-        pass
+        self.groupBox_2.setDisabled(True)
+        self.groupBox_3.setDisabled(True)
+        self.groupBox_4.setDisabled(False)
     
     def block_or_unblock_user(self):
         username = self.inputusername_blockuser.text()
