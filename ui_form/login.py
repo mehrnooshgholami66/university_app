@@ -50,17 +50,47 @@ class LoginForm(object):
         self.Form.close()
 
     def login(self):
-        pass
+        username = self.lineEdit.text()
+        password = self.lineEdit_2.text()
+        # My idea
+        if not username or not password:
+            MessageBox.warning(self.Form, "Please enter your username and password!")
+            return
+        #-------------------------------------
+        user = authenticate(username, password)
+        if not user:
+            MessageBox.error(self.Form, "The username or password is incorrect!")
+            return
+        user_id, role, is_active = user
+        if role == "admin" and is_active == 1:
+            MessageBox.success(self.Form,"You have successfully logged in.",on_ok=self.show_admin_ui)
+        elif role == "student" and is_active == 1:
+            MessageBox.success(self.Form,"You have successfully logged in.",on_ok=self.show_student_ui)
+        elif role == "professor" and is_active == 1:
+            MessageBox.success(self.Form,"You have successfully logged in.",on_ok=self.show_professor_ui)
+        elif role == "student" and is_active == 0:
+            MessageBox.warning(self.Form, "user is blocked . please contact admin")
+        elif role == "professor" and is_active == 0:
+            MessageBox.warning(self.Form, "user is blocked . please contact admin")
 
+
+
+       
     
     def show_admin_ui(self):
-        pass
+        self.Form.close()
+        self.admin_window = QtWidgets.QWidget()
+        self.admin_ui = AdminForm()
+        self.admin_ui.setupUi(self.admin_window)
+        self.admin_window.show()
         
     def show_student_ui(self):
-        pass
+        self.Form.close()
+        print("student")
     
     def show_professor_ui(self):
-        pass
+        self.Form.close()
+        print("professor")
 
 if __name__ == "__main__":
     import sys
