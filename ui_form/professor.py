@@ -1,5 +1,6 @@
 import sys
 from pathlib import Path
+
 sys.path.append(str(Path(__file__).resolve().parent.parent))
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import QFileDialog
@@ -8,6 +9,7 @@ import shutil
 from core.messages import MessageBox
 from core.repositories.file_repo import create_document
 from PyQt5.QtGui import QIcon
+
 
 class ProfessorForm(object):
     def __init__(self, professor_id):
@@ -82,13 +84,55 @@ class ProfessorForm(object):
     def select_file(self):
         pass
 
-    # ----------------- متد آپلود فایل -----------------
+    # ----------------- (متد آپلود فایل)-----------------
     def upload_file(self):
-        pass
+        if not self.selected_file_path:
+            MessageBox.error(self.Form, "No file selected")
+            return
+
+        title = self.uploadnamelineEdit_upload.text().strip()
+        if not title:
+            MessageBox.error(self.Form, "Upload name is required")
+            return
+
+        file_type = self.DacumentArticle_upload.currentText()
+        source_path = Path(self.selected_file_path)
+
+        # (موس رو به حالت لودینگ تغییر می‌دهیم)
+        QtWidgets.QApplication.setOverrideCursor(Qt.WaitCursor)
+        self.uploadpushButton_upload.setDisabled(True)
+
+        # --- (مسیر ذخیره فایل)---
+        storage_dir = Path("storage") / file_type
+        storage_dir.mkdir(parents=True, exist_ok=True)
+        destination_path = storage_dir / source_path.name
+
+        # (کپی فایل به storage)
+        shutil.copy(self.selected_file_path, destination_path)
+
+        # (ثبت در دیتابیس)
+        create_document(
+            title=title,
+            file_type=file_type,
+            professor_id=self.professor_id,  # (پاس داده شده از لاگین)
+            file_name=source_path.name,
+            file_path=str(destination_path),
+        )
+
+        # --- (بازگرداندن موس) ---
+        QtWidgets.QApplication.restoreOverrideCursor()
+        self.uploadpushButton_upload.setDisabled(False)
+
+        # --- (پیام موفقیت) ---
+        MessageBox.success(self.Form, "File uploaded successfully")
+        self.uploadnamelineEdit_upload.setText("")
+        self.browselabel_uplod.setText("browse")  # (بازگرداندن Label)
+
 
 # ------------------- اجرای مستقل فرم -------------------
 if __name__ == "__main__":
     import sys
+
     app = QtWidgets.QApplication(sys.argv)
     Form = QtWidgets.QWidget()
     ui = ProfessorForm(professor_id=1)  # نمونه professor_id
