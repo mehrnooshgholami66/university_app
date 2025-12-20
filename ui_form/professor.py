@@ -93,7 +93,8 @@ class ProfessorForm(object):
         self.selected_file_path = file_path
         self.browselabel_uplod.setText(Path(file_path).name)
 
-    # ----------------- (متد آپلود فایل)-----------------
+
+    # ----------------- متد آپلود فایل -----------------
     def upload_file(self):
         if not self.selected_file_path:
             MessageBox.error(self.Form, "No file selected")
