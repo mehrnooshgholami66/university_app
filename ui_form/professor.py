@@ -80,11 +80,16 @@ class ProfessorForm(object):
 
     # ----------------- متد انتخاب فایل -----------------
     def select_file(self):
-       file_path, _ = QFileDialog.getOpenFileName(self.form, "select file", "", "All Files(*.*)")
-       if not file_path:
-           return
-       self.selected_file_path = file_path
-       self.browselabel_uplod.setText(str(file_path))
+        file_path, _ = QFileDialog.getOpenFileName(
+            self.Form,
+            "Select file",
+            "",
+            "All Files (*.*)"
+        )
+        if not file_path:
+            return
+        self.selected_file_path = file_path
+        self.browselabel_uplod.setText(Path(file_path).name)
 
 
     # ----------------- متد آپلود فایل -----------------
