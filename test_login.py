@@ -4,6 +4,8 @@ sys.path.append(str(Path(__file__).resolve().parent.parent))
 from core.auth import authenticate
 from core.messages import MessageBox
 from ui_form.admin import AdminForm
+from ui_form.professor import ProfessorForm
+
 
 
 from PyQt5 import QtCore, QtGui, QtWidgets
@@ -90,13 +92,27 @@ class LoginForm(object):
     
     def show_professor_ui(self):
         self.Form.close()
-        print("professor")
+        self.professor_window = QtWidgets.QWidget()
+        self.professor_ui = ProfessorForm(professor_id=self.user_id)
+        self.professor_ui.setupUi(self.professor_window)
+        self.professor_window.show()
+
 
 if __name__ == "__main__":
     import sys
     app = QtWidgets.QApplication(sys.argv)
+    # ----------------- Splash Screen -----------------
+    pixmap = QtGui.QPixmap("assets/images/logo.jpg")
+    splash = QtWidgets.QSplashScreen(pixmap)
+    splash.setWindowFlags(QtCore.Qt.FramelessWindowHint)  # بدون فریم
+    splash.show()
+    # زمان نمایش  (مثلاً 5 ثانیه)
+    QtCore.QTimer.singleShot(5000, splash.close)
+# ----------------- Login Form -----------------
     Form = QtWidgets.QWidget()
     ui = LoginForm()
     ui.setupUi(Form)
-    Form.show()
+    def show_login():
+        Form.show()
+    QtCore.QTimer.singleShot(5000, show_login)
     sys.exit(app.exec_())
