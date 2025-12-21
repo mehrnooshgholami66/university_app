@@ -115,6 +115,9 @@ class ProfessorForm(object):
         destination_file_name = f"{unique_suffix}_{source_path.name}"  # فایل جدید یونیک
 
         # --- (مسیر ذخیره فایل)---
+        import uuid
+        unique_suffix = uuid.uuid4().hex  # تولید یک شناسه یکتا
+        destination_file_name = f"{unique_suffix}_{source_path.name}"  # فایل جدید یونیک
         storage_dir = Path("storage") / file_type
         storage_dir.mkdir(parents=True, exist_ok=True)
         destination_path = storage_dir / destination_file_name
