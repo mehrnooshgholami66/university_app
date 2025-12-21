@@ -4,6 +4,8 @@ sys.path.append(str(Path(__file__).resolve().parent.parent))
 from core.auth import authenticate
 from core.messages import MessageBox
 from ui_form.admin import AdminForm
+from ui_form.professor import ProfessorForm
+from ui_form.student import studentFrom
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtGui import QIcon
 

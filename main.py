@@ -1,10 +1,10 @@
 import sys
 from pathlib import Path
 sys.path.append(str(Path(__file__).resolve().parent))
-
 from ui_form.login import LoginForm
 from PyQt5 import QtWidgets
 from PyQt5 import QtCore, QtGui, QtWidgets
+
 
 class Login(QtWidgets.QWidget):
     def __init__(self):
