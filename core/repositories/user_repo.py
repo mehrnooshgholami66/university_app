@@ -1,4 +1,6 @@
-from core.database import get_connection
+from core.database import get_connection, placeholder
+
+ph = placeholder()  # بازگرداندن placeholder مناسب
 
 def get_professors():
     conn = get_connection()
@@ -16,11 +18,12 @@ def get_professors():
 def get_documents_by_professor(professor_id):
     conn = get_connection()
     cur = conn.cursor()
-    cur.execute("""
+    cur.execute(f"""
         SELECT title, file_type, file_name, file_path
         FROM documents
-        WHERE professor_id = ?
+        WHERE professor_id = {ph}
     """, (professor_id,))
     rows = cur.fetchall()
     conn.close()
     return rows
+
