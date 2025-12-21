@@ -127,7 +127,7 @@ class ProfessorForm(object):
             title=title,
             file_type=file_type,
             professor_id=self.professor_id,  # (پاس داده شده از لاگین)
-            file_name=source_path.name,
+            file_name=destination_file_name,
             file_path=str(destination_path),
         )
 
