@@ -1,17 +1,33 @@
+import os
 from pathlib import Path
+
+# ----------------------
 # ریشه پروژه
+# ----------------------
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+# ----------------------
+# محیط پروژه: dev یا prod
+# ----------------------
+APP_ENV = "dev"
+# or "prod" for deployment and production
+
+# ----------------------
+# اطلاعات برنامه
+# ----------------------
 APP_NAME = "University Management System"
-DEBUG = True
+DEBUG = APP_ENV == "dev"
 
-DB_ENGINE = "sqlite"  # sqlite | mysql
-
+# ----------------------
+# تنظیمات دیتابیس
+# ----------------------
 DATABASES = {
-    "sqlite": {
+    "dev": {  # توسعه → SQLite
+        "ENGINE": "sqlite",
         "NAME": BASE_DIR / "db.sqlite3",
     },
-    "mysql": {
+    "prod": {  # پروداکشن → MySQL
+        "ENGINE": "mysql",
         "NAME": "university_db",
         "USER": "root",
         "PASSWORD": "password",
@@ -20,19 +36,18 @@ DATABASES = {
     }
 }
 
-
+# ----------------------
+# توابع کمکی
+# ----------------------
 def get_app_name():
     return APP_NAME
-
 
 def is_debug():
     return DEBUG
 
-
 def get_db_engine():
-    return DB_ENGINE
-
+    return DATABASES[APP_ENV]["ENGINE"]
 
 def get_database_config():
-    return DATABASES[DB_ENGINE]
+    return DATABASES[APP_ENV]
 

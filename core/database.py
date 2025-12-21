@@ -16,13 +16,9 @@ def get_connection():
             config["NAME"],
             check_same_thread=False
         )
-
     elif engine == "mysql":
         if mysql is None:
-            raise ImportError(
-                "mysql-connector-python is not installed"
-            )
-
+            raise ImportError("mysql-connector-python is not installed")
         return mysql.connector.connect(
             host=config["HOST"],
             user=config["USER"],
@@ -31,7 +27,17 @@ def get_connection():
             port=config["PORT"],
             autocommit=True
         )
+    else:
+        raise ValueError(f"Unsupported DB_ENGINE: {engine}")
 
+
+def placeholder():
+    """ باز می‌گرداند placeholder مناسب driver """
+    engine = get_db_engine()
+    if engine == "sqlite":
+        return "?"
+    elif engine == "mysql":
+        return "%s"
     else:
         raise ValueError(f"Unsupported DB_ENGINE: {engine}")
 
