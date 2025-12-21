@@ -112,9 +112,12 @@ class ProfessorForm(object):
         self.uploadpushButton_upload.setDisabled(True)
 
         # --- (مسیر ذخیره فایل)---
+        import uuid
+        unique_suffix = uuid.uuid4().hex  # تولید یک شناسه یکتا
+        destination_file_name = f"{unique_suffix}_{source_path.name}"  # فایل جدید یونیک
         storage_dir = Path("storage") / file_type
         storage_dir.mkdir(parents=True, exist_ok=True)
-        destination_path = storage_dir / source_path.name
+        destination_path = storage_dir / destination_file_name
 
         # (کپی فایل به storage)
         shutil.copy(self.selected_file_path, destination_path)
