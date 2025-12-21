@@ -20,9 +20,9 @@ class ProfessorForm(object):
         self.Form = Form
         Form.setObjectName("Form")
         Form.resize(571, 260)
-        Form.setMinimumSize(QtCore.QSize(571, 260))
-        Form.setMaximumSize(QtCore.QSize(571, 260))
+        #------------windows size fixed----------------
 
+        # (تنظیم اندازه فرم به صورت ثابت)
         # --- Layout اصلی ---
         self.horizontalLayoutWidget = QtWidgets.QWidget(Form)
         self.horizontalLayoutWidget.setGeometry(QtCore.QRect(10, 10, 551, 241))

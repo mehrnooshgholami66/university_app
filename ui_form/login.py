@@ -15,8 +15,9 @@ class LoginForm(object):
         self.Form = Form
         Form.setObjectName("Form")
         Form.resize(322, 147)
-        Form.setMinimumSize(QtCore.QSize(322, 147))
-        Form.setMaximumSize(QtCore.QSize(322, 147))
+        #------------windows size fixed----------------
+
+        # (تنظیم اندازه فرم به صورت ثابت)
         self.label = QtWidgets.QLabel(Form)
         self.label.setGeometry(QtCore.QRect(20, 20, 61, 16))
         self.label.setObjectName("label")
