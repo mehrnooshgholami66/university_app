@@ -87,11 +87,17 @@ class LoginForm(object):
         
     def show_student_ui(self):
         self.Form.close()
-        print("student")
+        self.student_window = QtWidgets.QWidget()
+        self.student_ui =studentFrom(student_id=self.user_id)
+        self.student_ui.setupUi(self.student_window)
+        self.student_window.show()
     
     def show_professor_ui(self):
         self.Form.close()
-        print("professor")
+        self.professor_window = QtWidgets.QWidget()
+        self.professor_ui = ProfessorForm(professor_id=self.user_id)
+        self.professor_ui.setupUi(self.professor_window)
+        self.professor_window.show()
 
 if __name__ == "__main__":
     import sys
