@@ -4,8 +4,6 @@ sys.path.append(str(Path(__file__).resolve().parent.parent))
 from core.auth import authenticate
 from core.messages import MessageBox
 from ui_form.admin import AdminForm
-
-
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtGui import QIcon
 
@@ -73,9 +71,6 @@ class LoginForm(object):
             MessageBox.warning(self.Form, "user is blocked . please contact admin")
         elif role == "professor" and is_active == 0:
             MessageBox.warning(self.Form, "user is blocked . please contact admin")
-
-
-
        
     
     def show_admin_ui(self):

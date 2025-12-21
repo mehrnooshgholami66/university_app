@@ -5,9 +5,7 @@ from core.auth import authenticate
 from core.messages import MessageBox
 from ui_form.admin import AdminForm
 from ui_form.professor import ProfessorForm
-
-
-
+from ui_form.student import studentFrom
 from PyQt5 import QtCore, QtGui, QtWidgets
 
 
@@ -73,11 +71,7 @@ class LoginForm(object):
         elif role == "student" and is_active == 0:
             MessageBox.warning(self.Form, "user is blocked . please contact admin")
         elif role == "professor" and is_active == 0:
-            MessageBox.warning(self.Form, "user is blocked . please contact admin")
-
-
-
-       
+            MessageBox.warning(self.Form, "user is blocked . please contact admin")      
     
     def show_admin_ui(self):
         self.Form.close()
@@ -88,7 +82,10 @@ class LoginForm(object):
         
     def show_student_ui(self):
         self.Form.close()
-        print("student")
+        self.student_window = QtWidgets.QWidget()
+        self.student_ui = studentFrom(student_id=self.user_id)
+        self.student_ui.setupUi(self.student_window)
+        self.student_window.show()
     
     def show_professor_ui(self):
         self.Form.close()
@@ -101,18 +98,7 @@ class LoginForm(object):
 if __name__ == "__main__":
     import sys
     app = QtWidgets.QApplication(sys.argv)
-    # ----------------- Splash Screen -----------------
-    pixmap = QtGui.QPixmap("assets/images/logo.jpg")
-    splash = QtWidgets.QSplashScreen(pixmap)
-    splash.setWindowFlags(QtCore.Qt.FramelessWindowHint)  # بدون فریم
-    splash.show()
-    # زمان نمایش  (مثلاً 5 ثانیه)
-    QtCore.QTimer.singleShot(5000, splash.close)
-# ----------------- Login Form -----------------
     Form = QtWidgets.QWidget()
     ui = LoginForm()
     ui.setupUi(Form)
-    def show_login():
-        Form.show()
-    QtCore.QTimer.singleShot(5000, show_login)
     sys.exit(app.exec_())

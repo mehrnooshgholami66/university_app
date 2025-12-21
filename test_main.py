@@ -4,6 +4,7 @@ sys.path.append(str(Path(__file__).resolve().parent))
 
 from ui_form.login import LoginForm
 from PyQt5 import QtWidgets
+
 from PyQt5 import QtCore, QtGui, QtWidgets
 
 class Login(QtWidgets.QWidget):
@@ -16,7 +17,18 @@ class Login(QtWidgets.QWidget):
 def main():
     app = QtWidgets.QApplication(sys.argv)
     login = Login()
-    login.show()
+    # ----------------- Splash Screen -----------------
+    pixmap = QtGui.QPixmap("assets/images/logo.jpg")
+    splash = QtWidgets.QSplashScreen(pixmap)
+    splash.setWindowFlags(QtCore.Qt.FramelessWindowHint)  # بدون فریم
+    splash.show()
+    
+# ----------------- Login Form -----------------
+    def show_login():
+        splash.close()
+        login.show()
+    # زمان نمایش  (مثلاً 5 ثانیه)
+    QtCore.QTimer.singleShot(5000, show_login)
     sys.exit(app.exec_())
 
 if __name__ == "__main__":

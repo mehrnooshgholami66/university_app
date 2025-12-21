@@ -9,6 +9,9 @@ class studentFrom(object):
     """
     Student UI for download documents
     """
+    def __init__(self, student_id):
+        # student_id از لاگین پاس داده می‌شود
+        self.student_id = student_id
     def setupUi(self, Dialog):
         Dialog.setObjectName("Dialog")
         Dialog.resize(553, 450)
@@ -71,7 +74,7 @@ if __name__ == "__main__":
     import sys
     app = QtWidgets.QApplication(sys.argv)
     Form = QtWidgets.QDialog()
-    ui = studentFrom()
+    ui = studentFrom(student_id=1)
     ui.setupUi(Form)
     Form.show()
     sys.exit(app.exec_())
