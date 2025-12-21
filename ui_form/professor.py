@@ -20,6 +20,8 @@ class ProfessorForm(object):
         self.Form = Form
         Form.setObjectName("Form")
         Form.resize(571, 260)
+        Form.setMinimumSize(QtCore.QSize(571, 260))
+        Form.setMaximumSize(QtCore.QSize(571, 260))
 
         # --- Layout اصلی ---
         self.horizontalLayoutWidget = QtWidgets.QWidget(Form)
@@ -142,7 +144,7 @@ if __name__ == "__main__":
 
     app = QtWidgets.QApplication(sys.argv)
     Form = QtWidgets.QWidget()
-    ui = ProfessorForm(professor_id=1)  # نمونه professor_id
+    ui = ProfessorForm(professor_id=10)  # نمونه professor_id
     ui.setupUi(Form)
     Form.show()
     sys.exit(app.exec_())

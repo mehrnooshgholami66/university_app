@@ -14,6 +14,8 @@ class AdminForm(object):
         self.Form = Form
         Form.setObjectName("Form")
         Form.resize(603, 431)
+        Form.setMinimumSize(QtCore.QSize(603, 431))
+        Form.setMaximumSize(QtCore.QSize(603, 431))
         self.verticalLayoutWidget = QtWidgets.QWidget(Form)
         self.verticalLayoutWidget.setGeometry(QtCore.QRect(10, 0, 581, 81))
         self.verticalLayoutWidget.setObjectName("verticalLayoutWidget")
