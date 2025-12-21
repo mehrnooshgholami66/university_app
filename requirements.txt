@@ -1,4 +1,6 @@
 altgraph==0.17.5
+bcrypt==5.0.0
+mysql-connector-python==9.5.0
 packaging==25.0
 pefile==2024.8.26
 pyinstaller==6.17.0
@@ -9,4 +11,3 @@ PyQt5_sip==12.17.2
 pyuic5-tool==0.0.1
 pywin32-ctypes==0.2.3
 setuptools==80.9.0
-mysql-connector-python

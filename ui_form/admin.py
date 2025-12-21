@@ -7,6 +7,7 @@ from core.user_action import (
      create_user_role, delete_user, block_user,
      unblock_user, exists_user, is_block, is_unblock)
 from core.messages import MessageBox
+from core.security import hash_password
 
 
 class AdminForm(object):
@@ -201,7 +202,8 @@ class AdminForm(object):
         if exists_user(username):
             MessageBox.error(self.Form, "user already exists")
             return
-        create_user_role(username, password, role)
+        hashed_password = hash_password(password)
+        create_user_role(username, hashed_password, role)
         self.inputusername_createuser.setText("")
         self.inputpassword_createuser.setText("")
         MessageBox.success(self.Form, "user created successfully") 
