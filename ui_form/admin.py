@@ -2,6 +2,7 @@ import sys
 from pathlib import Path
 sys.path.append(str(Path(__file__).resolve().parent.parent))
 from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5.QtGui import QIcon
 from core.user_action import (
      create_user_role, delete_user, block_user,
      unblock_user, exists_user, is_block, is_unblock)
@@ -13,9 +14,6 @@ class AdminForm(object):
         self.Form = Form
         Form.setObjectName("Form")
         Form.resize(603, 431)
-        icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap("10_(50).jpg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        Form.setWindowIcon(icon)
         self.verticalLayoutWidget = QtWidgets.QWidget(Form)
         self.verticalLayoutWidget.setGeometry(QtCore.QRect(10, 0, 581, 81))
         self.verticalLayoutWidget.setObjectName("verticalLayoutWidget")

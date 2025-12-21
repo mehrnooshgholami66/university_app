@@ -7,6 +7,7 @@ from ui_form.admin import AdminForm
 
 
 from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5.QtGui import QIcon
 
 
 class LoginForm(object):

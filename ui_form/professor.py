@@ -8,6 +8,7 @@ from PyQt5.QtCore import Qt
 import shutil
 from core.messages import MessageBox
 from core.repositories.file_repo import create_document
+from PyQt5.QtGui import QIcon
 
 class ProfessorForm(object):
     def __init__(self, professor_id):
