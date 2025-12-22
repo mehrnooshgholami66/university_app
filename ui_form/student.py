@@ -10,7 +10,8 @@ from core.repositories.user_repo import (
 from core.messages import MessageBox
 from PyQt5.QtWidgets import QPushButton
 import shutil
-
+from core.student_api import api_get_professors, api_get_documents, api_get_documents_by_professor
+from core.config import APP_ENV
 
 class studentFrom(object):
     """
@@ -92,10 +93,15 @@ class studentFrom(object):
 
     def load_professors(self):
         self.comboBox.clear()
-        self.professors_cache = get_professors()
+        if APP_ENV == "dev":
+            self.professors_cache = get_professors()
+        else:
+            self.professors_cache = [
+                (p["id"], p["username"])
+                for p in api_get_professors()
+            ]
 
         for pid, name in self.professors_cache:
-            # name = متن، pid = دیتا مخفی
             self.comboBox.addItem(name, pid)
 
     def filter_professors(self, text):
@@ -109,27 +115,61 @@ class studentFrom(object):
         if not professor_id:
             return
 
-        documents = get_documents_by_professor(professor_id)
-
         self.tableWidget.setRowCount(0)
 
-        for row_index, (title, file_type, file_name, file_path) in enumerate(documents):
+        # -------- دریافت دیتا --------
+        if APP_ENV == "dev":
+            documents = get_documents_by_professor(professor_id)
+            # خروجی dev:
+            # (title, file_type, file_name, file_path)
+        else:
+            documents = api_get_documents_by_professor(professor_id)
+            # خروجی prod:
+            # dict
+
+        # -------- پر کردن جدول --------
+        for row_index, doc in enumerate(documents):
             self.tableWidget.insertRow(row_index)
 
-            self.tableWidget.setItem(row_index, 0, QtWidgets.QTableWidgetItem(title))
-            self.tableWidget.setItem(row_index, 1, QtWidgets.QTableWidgetItem(file_type))
-            self.tableWidget.setItem(row_index, 2, QtWidgets.QTableWidgetItem(
-                self.comboBox.currentText()
-            ))
+            if APP_ENV == "dev":
+                title, file_type, file_name, file_path = doc
+                file_url = None
+            else:
+                title = doc["title"]
+                file_type = doc["file_type"]
+                file_url = doc["file"]
+                file_name = file_url.split("/")[-1]
+
+            self.tableWidget.setItem(
+                row_index, 0, QtWidgets.QTableWidgetItem(title)
+            )
+            self.tableWidget.setItem(
+                row_index, 1, QtWidgets.QTableWidgetItem(file_type)
+            )
+            self.tableWidget.setItem(
+                row_index, 2, QtWidgets.QTableWidgetItem(
+                    self.comboBox.currentText()
+                )
+            )
 
             # ---------- Download button ----------
             btn = QPushButton("Download")
             btn.setIcon(QIcon("assets/icons/download.png"))
-            btn.clicked.connect(
-                lambda _, p=file_path, n=file_name: self.download_file(p, n)
-            )
+
+            if APP_ENV == "dev":
+                btn.clicked.connect(
+                    lambda _, p=file_path, n=file_name:
+                    self.download_file_dev(p, n)
+                )
+            else:
+                btn.clicked.connect(
+                    lambda _, url=file_url, n=file_name:
+                    self.download_file_prod(url, n)
+                )
+
             self.tableWidget.setCellWidget(row_index, 3, btn)
-    def download_file(self, file_path, file_name):
+
+    def download_file_dev(self, file_path, file_name):
         save_path, _ = QtWidgets.QFileDialog.getSaveFileName(
             self.form,
             "Save file",
@@ -141,13 +181,32 @@ class studentFrom(object):
 
         shutil.copy(file_path, save_path)
         MessageBox.success(self.form, "File downloaded successfully.")
+    def download_file_prod(self, file_url, file_name):
+        save_path, _ = QtWidgets.QFileDialog.getSaveFileName(
+            self.form,
+            "Save file",
+            file_name
+        )
+
+        if not save_path:
+            return
+
+        import requests
+
+        try:
+            resp = requests.get(file_url, stream=True)
+            resp.raise_for_status()
+
+            with open(save_path, "wb") as f:
+                for chunk in resp.iter_content(8192):
+                    f.write(chunk)
+
+            MessageBox.success(self.form, "File downloaded successfully.")
+
+        except Exception as e:
+            MessageBox.error(self.form, f"Download failed:\n{e}")
+
         
-
-
-
-
-
-
 if __name__ == "__main__":
     import sys
     app = QtWidgets.QApplication(sys.argv)
