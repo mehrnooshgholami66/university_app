@@ -9,7 +9,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # ----------------------
 # محیط پروژه: "dev" یا "prod"
 # ----------------------
-APP_ENV = "prod"
+APP_ENV = "dev"
 
 # ----------------------
 # اطلاعات سرور / API
