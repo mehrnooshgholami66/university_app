@@ -9,7 +9,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # ----------------------
 # محیط پروژه: "dev" یا "prod"
 # ----------------------
-APP_ENV = "dev"
+APP_ENV = "prod"
 
 # ----------------------
 # اطلاعات سرور / API
@@ -18,6 +18,7 @@ BASE_SERVER = "http://127.0.0.1:8000"
 API_URL_LOGIN = f"{BASE_SERVER}/api/auth/login/"
 API_CREATE_USER = f"{BASE_SERVER}/api/auth/create-user/"
 API_DOCUMENT_UPLOAD = f"{BASE_SERVER}/api/documents/upload/"
+API_PROFESSORS_VIEW = f"{BASE_SERVER}/api/auth/professors/"
 def get_professor_documents_api(professor_id):
     return f"{BASE_SERVER}/api/documents/professor/{professor_id}/"
 def block_user_api(username):

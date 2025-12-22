@@ -1,5 +1,5 @@
 from core.database import get_connection
-from core.config import APP_ENV, API_URL_LOGIN
+from core.config import APP_ENV, API_URL_LOGIN, API_DOCUMENT_UPLOAD
 import requests
 
 def create_document(title, file_type, professor_id, file_name, file_path):

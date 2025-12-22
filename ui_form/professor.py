@@ -1,7 +1,8 @@
 import sys
 from pathlib import Path
-
 sys.path.append(str(Path(__file__).resolve().parent.parent))
+from core.config import APP_ENV
+from core.config import BASE_SERVER
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import QFileDialog
 from PyQt5.QtCore import Qt
@@ -9,6 +10,7 @@ import shutil
 from core.messages import MessageBox
 from core.repositories.file_repo import create_document
 from PyQt5.QtGui import QIcon
+import requests
 
 
 class ProfessorForm(object):
@@ -111,38 +113,65 @@ class ProfessorForm(object):
         file_type = self.DacumentArticle_upload.currentText()
         source_path = Path(self.selected_file_path)
 
-        # (موس رو به حالت لودینگ تغییر می‌دهیم)
+        # موس لودینگ
         QtWidgets.QApplication.setOverrideCursor(Qt.WaitCursor)
         self.uploadpushButton_upload.setDisabled(True)
 
-        # --- (مسیر ذخیره فایل)---
-        import uuid
-        unique_suffix = uuid.uuid4().hex  # تولید یک شناسه یکتا
-        destination_file_name = f"{unique_suffix}_{source_path.name}"  # فایل جدید یونیک
-        storage_dir = Path("storage") / file_type
-        storage_dir.mkdir(parents=True, exist_ok=True)
-        destination_path = storage_dir / destination_file_name
+        try:
+            # =========================
+            # DEV → لوکال
+            # =========================
+            if APP_ENV == "dev":
+                import uuid
+                unique_suffix = uuid.uuid4().hex
+                destination_file_name = f"{unique_suffix}_{source_path.name}"
 
-        # (کپی فایل به storage)
-        shutil.copy(self.selected_file_path, destination_path)
+                storage_dir = Path("storage") / file_type
+                storage_dir.mkdir(parents=True, exist_ok=True)
+                destination_path = storage_dir / destination_file_name
 
-        # (ثبت در دیتابیس)
-        create_document(
-            title=title,
-            file_type=file_type,
-            professor_id=self.professor_id,  # (پاس داده شده از لاگین)
-            file_name=destination_file_name,
-            file_path=str(destination_path),
-        )
+                shutil.copy(self.selected_file_path, destination_path)
 
-        # --- (بازگرداندن موس) ---
-        QtWidgets.QApplication.restoreOverrideCursor()
-        self.uploadpushButton_upload.setDisabled(False)
+                create_document(
+                    title=title,
+                    file_type=file_type,
+                    professor_id=self.professor_id,
+                    file_name=destination_file_name,
+                    file_path=str(destination_path),
+                )
 
-        # --- (پیام موفقیت) ---
-        MessageBox.success(self.Form, "File uploaded successfully")
-        self.uploadnamelineEdit_upload.setText("")
-        self.browselabel_uplod.setText("browse")  # (بازگرداندن Label)
+            # =========================
+            # PROD → API
+            # =========================
+            elif APP_ENV == "prod":
+                url = f"{BASE_SERVER}/api/documents/upload/"
+
+                with open(self.selected_file_path, "rb") as f:
+                    files = {
+                        "file": f
+                    }
+                    data = {
+                        "title": title,
+                        "file_type": file_type,
+                        "professor": self.professor_id
+                    }
+
+                    response = requests.post(url, data=data, files=files)
+
+                if response.status_code != 201:
+                    MessageBox.error(
+                        self.Form,
+                        f"Upload failed: {response.text}"
+                    )
+                    return
+
+            MessageBox.success(self.Form, "File uploaded successfully")
+            self.uploadnamelineEdit_upload.setText("")
+            self.browselabel_uplod.setText("browse")
+
+        finally:
+            QtWidgets.QApplication.restoreOverrideCursor()
+            self.uploadpushButton_upload.setDisabled(False)
 
 
 # ------------------- اجرای مستقل فرم -------------------
@@ -151,7 +180,7 @@ if __name__ == "__main__":
 
     app = QtWidgets.QApplication(sys.argv)
     Form = QtWidgets.QWidget()
-    ui = ProfessorForm(professor_id=10)  # نمونه professor_id
+    ui = ProfessorForm(professor_id=7)  # نمونه professor_id
     ui.setupUi(Form)
     Form.show()
     sys.exit(app.exec_())
