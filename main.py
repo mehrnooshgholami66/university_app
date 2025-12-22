@@ -16,8 +16,18 @@ class Login(QtWidgets.QWidget):
 def main():
     app = QtWidgets.QApplication(sys.argv)
     login = Login()
-    login.show()
+    pixmap = QtGui.QPixmap("assets/images/logo.png")
+    splash =QtWidgets.QSplashScreen(pixmap)
+    splash.setWindowFlags(QtCore.Qt.FramelessWindowHint)
+    splash.show()
+
+    def show_login():
+        splash.close()
+        login.show()
+
+    QtCore.QTimer.singleShot(5000, show_login)
     sys.exit(app.exec_())
+
 
 if __name__ == "__main__":
     main()

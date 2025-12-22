@@ -11,3 +11,4 @@ PyQt5_sip==12.17.2
 pyuic5-tool==0.0.1
 pywin32-ctypes==0.2.3
 setuptools==80.9.0
+requests

@@ -7,7 +7,6 @@ from core.user_action import (
      create_user_role, delete_user, block_user,
      unblock_user, exists_user, is_block, is_unblock)
 from core.messages import MessageBox
-from core.security import hash_password
 
 
 class AdminForm(object):
@@ -15,6 +14,7 @@ class AdminForm(object):
         self.Form = Form
         Form.setObjectName("Form")
         Form.resize(603, 431)
+        Form.setWindowIcon(QIcon("assets/icons/admin.png"))
         #------------windows size fixed----------------
         Form.setMinimumSize(QtCore.QSize(603, 431))
         Form.setMaximumSize(QtCore.QSize(603, 431))
@@ -109,6 +109,9 @@ class AdminForm(object):
         self.deleteuserButton.setGeometry(QtCore.QRect(452, 20, 111, 41))
         self.deleteuserButton.setObjectName("deleteuserButton")
         self.horizontalLayout_3.addWidget(self.groupBox_4)
+        self.createuserButton.setIcon(QIcon("assets/icons/create.png"))
+        self.commituserButton.setIcon(QIcon("assets/icons/commit.png"))
+        self.deleteuserButton.setIcon(QIcon("assets/icons/delete.png"))
         
         # updated the admin panel as given instructions
 
@@ -202,8 +205,11 @@ class AdminForm(object):
         if exists_user(username):
             MessageBox.error(self.Form, "user already exists")
             return
-        hashed_password = hash_password(password)
-        create_user_role(username, hashed_password, role)
+        try:
+            create_user_role(username, password, role)
+        except:
+            MessageBox.error(self.Form, "username is already exists")
+            return
         self.inputusername_createuser.setText("")
         self.inputpassword_createuser.setText("")
         MessageBox.success(self.Form, "user created successfully") 

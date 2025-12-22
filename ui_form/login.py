@@ -15,8 +15,10 @@ class LoginForm(object):
         self.Form = Form
         Form.setObjectName("Form")
         Form.resize(322, 147)
+        Form.setWindowIcon(QIcon("assets/icons/login.png"))
         #------------windows size fixed----------------
-
+        Form.setMinimumSize(QtCore.QSize(322, 147))
+        Form.setMaximumSize(QtCore.QSize(322, 147))
         # (تنظیم اندازه فرم به صورت ثابت)
         self.label = QtWidgets.QLabel(Form)
         self.label.setGeometry(QtCore.QRect(20, 20, 61, 16))
@@ -87,11 +89,17 @@ class LoginForm(object):
         
     def show_student_ui(self):
         self.Form.close()
-        print("student")
+        self.student_window = QtWidgets.QWidget()
+        self.student_ui =studentFrom(student_id=self.user_id)
+        self.student_ui.setupUi(self.student_window)
+        self.student_window.show()
     
     def show_professor_ui(self):
         self.Form.close()
-        print("professor")
+        self.professor_window = QtWidgets.QWidget()
+        self.professor_ui = ProfessorForm(professor_id=self.user_id)
+        self.professor_ui.setupUi(self.professor_window)
+        self.professor_window.show()
 
 if __name__ == "__main__":
     import sys
