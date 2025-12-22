@@ -20,8 +20,10 @@ class ProfessorForm(object):
         self.Form = Form
         Form.setObjectName("Form")
         Form.resize(571, 260)
+        Form.setWindowIcon(QIcon("assets/icons/professor.png"))
         #------------windows size fixed----------------
-
+        Form.setMinimumSize(QtCore.QSize(571, 260))
+        Form.setMaximumSize(QtCore.QSize(571, 260))
         # (تنظیم اندازه فرم به صورت ثابت)
         # --- Layout اصلی ---
         self.horizontalLayoutWidget = QtWidgets.QWidget(Form)
@@ -61,6 +63,8 @@ class ProfessorForm(object):
         self.uploadpushButton_upload.setGeometry(QtCore.QRect(10, 190, 531, 41))
 
         self.horizontalLayout.addWidget(self.groupBox)
+        self.selectpushButton_upload.setIcon(QIcon("assets/icons/select.png"))
+        self.uploadpushButton_upload.setIcon(QIcon("assets/icons/upload.png"))
 
         # --- متغیر داخلی ---
         self.selected_file_path = None

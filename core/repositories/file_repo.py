@@ -1,14 +1,17 @@
-from core.database import get_connection, placeholder
-
-ph = placeholder()
+from core.database import get_connection
+from core.config import APP_ENV, API_URL_LOGIN
+import requests
 
 def create_document(title, file_type, professor_id, file_name, file_path):
-    conn = get_connection()
-    cursor = conn.cursor()
-    cursor.execute(
-        f"INSERT INTO documents (title, file_type, professor_id, file_name, file_path) VALUES ({ph}, {ph}, {ph}, {ph}, {ph})",
-        (title, file_type, professor_id, file_name, file_path)
-    )
-    conn.commit()
-    conn.close()
+    if APP_ENV == "dev":
+        conn = get_connection()
+        cursor = conn.cursor()
+        cursor.execute(
+            f"INSERT INTO documents (title, file_type, professor_id, file_name, file_path) VALUES (?, ?, ?, ?, ?)",
+            (title, file_type, professor_id, file_name, file_path)
+        )
+        conn.commit()
+        conn.close()
+    else:
+        pass
 

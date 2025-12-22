@@ -20,7 +20,6 @@ def main():
     splash =QtWidgets.QSplashScreen(pixmap)
     splash.setWindowFlags(QtCore.Qt.FramelessWindowHint)
     splash.show()
-  
 
     def show_login():
         splash.close()

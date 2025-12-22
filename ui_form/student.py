@@ -22,8 +22,10 @@ class studentFrom(object):
     def setupUi(self, Dialog):
         Dialog.setObjectName("Dialog")
         Dialog.resize(670, 450)
+        Dialog.setWindowIcon(QIcon("assets/icons/student.png"))
         #------------windows size fixed----------------
-
+        Dialog.setMinimumSize(QtCore.QSize(670, 450))
+        Dialog.setMaximumSize(QtCore.QSize(670, 450))
         # (تنظیم اندازه فرم به صورت ثابت)
         self.form = Dialog
         self.verticalLayoutWidget = QtWidgets.QWidget(Dialog)
