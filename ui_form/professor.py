@@ -22,7 +22,7 @@ class ProfessorForm(object):
         Form.setObjectName("Form")
         Form.resize(571, 260)
         Form.setWindowIcon(QIcon(str(resource_path("assets/icons/professor.png"))))
-        #------------windows size fixed----------------
+        # ------------windows size fixed----------------
         Form.setMinimumSize(QtCore.QSize(571, 260))
         Form.setMaximumSize(QtCore.QSize(571, 260))
         # (تنظیم اندازه فرم به صورت ثابت)
@@ -64,8 +64,12 @@ class ProfessorForm(object):
         self.uploadpushButton_upload.setGeometry(QtCore.QRect(10, 190, 531, 41))
 
         self.horizontalLayout.addWidget(self.groupBox)
-        self.selectpushButton_upload.setIcon(QIcon(str(resource_path("assets/icons/select.png"))))
-        self.uploadpushButton_upload.setIcon(QIcon(str(resource_path("assets/icons/upload.png"))))
+        self.selectpushButton_upload.setIcon(
+            QIcon(str(resource_path("assets/icons/select.png")))
+        )
+        self.uploadpushButton_upload.setIcon(
+            QIcon(str(resource_path("assets/icons/upload.png")))
+        )
 
         # --- متغیر داخلی ---
         self.selected_file_path = None
@@ -87,7 +91,7 @@ class ProfessorForm(object):
         self.uploadnamelabel_upload.setText(_translate("Form", "upload name"))
         self.uploadpushButton_upload.setText(_translate("Form", "upload"))
 
-    # ----------------- متد انتخاب فایل -----------------
+    # ----------------- (متد انتخاب فایل) -----------------
     def select_file(self):
         file_path, _ = QFileDialog.getOpenFileName(
             self.Form, "Select file", "", "All Files (*.*)"
@@ -98,7 +102,6 @@ class ProfessorForm(object):
         self.browselabel_uplod.setText(Path(file_path).name)
 
     # ----------------- متد آپلود فایل -----------------
-
     def upload_file(self):
         if not self.selected_file_path:
             MessageBox.error(self.Form, "No file selected")
@@ -122,7 +125,7 @@ class ProfessorForm(object):
             # =========================
             if APP_ENV == "dev":
                 import uuid
-                
+
                 storage_dir = Path.home() / "UniversityAppStorage" / file_type
                 storage_dir.mkdir(parents=True, exist_ok=True)
                 unique_suffix = uuid.uuid4().hex
@@ -145,22 +148,17 @@ class ProfessorForm(object):
                 url = f"{BASE_SERVER}/api/documents/upload/"
 
                 with open(self.selected_file_path, "rb") as f:
-                    files = {
-                        "file": f
-                    }
+                    files = {"file": f}
                     data = {
                         "title": title,
                         "file_type": file_type,
-                        "professor": self.professor_id
+                        "professor": self.professor_id,
                     }
 
                     response = requests.post(url, data=data, files=files)
 
                 if response.status_code != 201:
-                    MessageBox.error(
-                        self.Form,
-                        f"Upload failed: {response.text}"
-                    )
+                    MessageBox.error(self.Form, f"Upload failed: {response.text}")
                     return
 
             MessageBox.success(self.Form, "File uploaded successfully")
