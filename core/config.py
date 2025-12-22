@@ -9,7 +9,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # ----------------------
 # محیط پروژه: "dev" یا "prod"
 # ----------------------
-APP_ENV = "dev"
+APP_ENV = "prod"
 
 # ----------------------
 # اطلاعات سرور / API
@@ -17,6 +17,15 @@ APP_ENV = "dev"
 BASE_SERVER = "http://127.0.0.1:8000"
 API_URL_LOGIN = f"{BASE_SERVER}/api/auth/login/"
 API_CREATE_USER = f"{BASE_SERVER}/api/auth/create-user/"
+API_DOCUMENT_UPLOAD = f"{BASE_SERVER}/api/documents/upload/"
+def get_professor_documents_api(professor_id):
+    return f"{BASE_SERVER}/api/documents/professor/{professor_id}/"
+def block_user_api(username):
+    return f"{BASE_SERVER}/api/auth/block-user/{username}/"
+def unblock_user_api(username):
+    return f"{BASE_SERVER}/api/auth/unblock-user/{username}/"
+def delete_user_api(username):
+    return f"{BASE_SERVER}/api/auth/delete-user/{username}/"
 
 # ----------------------
 # اطلاعات برنامه
@@ -31,10 +40,6 @@ DATABASES = {
     "dev": {  # توسعه → SQLite
         "ENGINE": "sqlite",
         "NAME": BASE_DIR / "db.sqlite3",
-    },
-    "prod": {  # پروداکشن → دیتابیس از API مدیریت می‌شود، نیازی به اتصال مستقیم نیست
-        "ENGINE": None,
-        "NAME": None,
     },
 }
 

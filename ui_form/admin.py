@@ -7,6 +7,7 @@ from core.user_action import (
      create_user_role, delete_user, block_user,
      unblock_user, exists_user, is_block, is_unblock)
 from core.messages import MessageBox
+from core.config import APP_ENV
 
 
 class AdminForm(object):
@@ -172,25 +173,41 @@ class AdminForm(object):
     
     def block_or_unblock_user(self):
         username = self.inputusername_blockuser.text()
-        if not exists_user(username):
-            MessageBox.error(self.Form, "user does not exist")
-            return
-        if self.blockuser_radio.isChecked():
-            if is_block(username):
-                MessageBox.error(self.Form, "user is already blocked")
+        if APP_ENV == "dev":
+            if not exists_user(username):
+                MessageBox.error(self.Form, "user does not exist")
                 return
-            block_user(username)
-            self.inputusername_blockuser.setText("")
-            MessageBox.success(self.Form, "user blocked successfully") 
-        elif self.unblockuser_radio.isChecked():
-            if is_unblock(username):
-                MessageBox.error(self.Form, "user is already unblocked")
-                return
-            unblock_user(username)
-            self.inputusername_blockuser.setText("")
-            MessageBox.success(self.Form, "user unblocked successfully") 
+            if self.blockuser_radio.isChecked():
+                if is_block(username):
+                    MessageBox.error(self.Form, "user is already blocked")
+                    return
+                block_user(username)
+                self.inputusername_blockuser.setText("")
+                MessageBox.success(self.Form, "user blocked successfully") 
+            elif self.unblockuser_radio.isChecked():
+                if is_unblock(username):
+                    MessageBox.error(self.Form, "user is already unblocked")
+                    return
+                unblock_user(username)
+                self.inputusername_blockuser.setText("")
+                MessageBox.success(self.Form, "user unblocked successfully") 
+            else:
+                MessageBox.error(self.Form, "please select one of block or unblock")
         else:
-            MessageBox.error(self.Form, "please select one of block or unblock")
+            if self.blockuser_radio.isChecked():
+                try:
+                    block_user(username)  
+                    MessageBox.success(self.Form, "operation completed successfully")
+                except:
+                    MessageBox.error(self.Form, "operation failed in modifying user status . user dos not exist or already blocked")
+            elif self.unblockuser_radio.isChecked():
+                try:
+                    unblock_user(username)  
+                    MessageBox.success(self.Form, "operation completed successfully")
+                except:
+                    MessageBox.error(self.Form, "operation failed in modifying user status . user dos not exist or already unblocked")
+            else:
+                MessageBox.error(self.Form, "please select one of block or unblock")
 
     def create_user(self):
         username = self.inputusername_createuser.text()
@@ -217,12 +234,25 @@ class AdminForm(object):
 
     def delete_user(self):
         username = self.inputusername_deleteuser.text()
-        if not exists_user(username):
-            MessageBox.error(self.Form, "user does not exist")
+        if APP_ENV == "dev":
+            if not exists_user(username):
+                MessageBox.error(self.Form, "user does not exist")
+                return
+            username = self.inputusername_deleteuser.text()
+            if not exists_user(username):
+                MessageBox.error(self.Form, "user does not exist")
+                return
+            delete_user(username)
+            self.inputusername_deleteuser.setText("")
+            MessageBox.success(self.Form, "user deleted successfully") 
             return
-        delete_user(username)
-        self.inputusername_deleteuser.setText("")
-        MessageBox.success(self.Form, "user deleted successfully") 
+        else:
+            try:
+                delete_user(username)  
+                MessageBox.success(self.Form, "operation completed successfully")
+            except:
+                MessageBox.error(self.Form, "operation failed in deleting user . user dos not exist")
+        
 
 if __name__ == "__main__":
     import sys

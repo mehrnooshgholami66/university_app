@@ -1,5 +1,5 @@
 from core.database import get_connection
-from core.config import APP_ENV, API_CREATE_USER
+from core.config import APP_ENV, API_CREATE_USER, block_user_api, unblock_user_api, delete_user_api
 from core.security import hash_password
 import requests
 
@@ -33,8 +33,9 @@ def block_user(username):
         conn.commit()
         conn.close()
     else:
-        pass
-
+        response = requests.post(block_user_api(username))
+        if response.status_code != 200:
+            raise Exception("Failed to unblock user in production environment")
 
 def unblock_user(username):
     if APP_ENV == "dev":
@@ -47,7 +48,10 @@ def unblock_user(username):
         conn.commit()
         conn.close()
     else:
-        pass
+        response = requests.post(unblock_user_api(username))
+        if response.status_code != 200:
+            raise Exception("Failed to unblock user in production environment")
+    
 
 
 def delete_user(username):
@@ -61,7 +65,9 @@ def delete_user(username):
         conn.commit()
         conn.close()
     else:
-        pass
+        response = requests.delete(delete_user_api(username))
+        if response.status_code != 200:
+            raise Exception("Failed to delete user in production environment")
 
 
 def exists_user(username):
