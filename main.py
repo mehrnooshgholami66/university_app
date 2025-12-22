@@ -4,6 +4,7 @@ sys.path.append(str(Path(__file__).resolve().parent))
 from ui_form.login import LoginForm
 from PyQt5 import QtWidgets
 from PyQt5 import QtCore, QtGui, QtWidgets
+from core.utils import resource_path
 
 
 class Login(QtWidgets.QWidget):
@@ -16,7 +17,7 @@ class Login(QtWidgets.QWidget):
 def main():
     app = QtWidgets.QApplication(sys.argv)
     login = Login()
-    pixmap = QtGui.QPixmap("assets/images/logo.png")
+    pixmap = QtGui.QPixmap(str(resource_path("assets/images/logo.png")))
     splash =QtWidgets.QSplashScreen(pixmap)
     splash.setWindowFlags(QtCore.Qt.FramelessWindowHint)
     splash.show()

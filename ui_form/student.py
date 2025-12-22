@@ -1,6 +1,3 @@
-import sys
-from pathlib import Path
-sys.path.append(str(Path(__file__).resolve().parent.parent))
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtGui import QIcon
 from core.repositories.user_repo import (
@@ -12,6 +9,7 @@ from PyQt5.QtWidgets import QPushButton
 import shutil
 from core.student_api import api_get_professors, api_get_documents, api_get_documents_by_professor
 from core.config import APP_ENV
+from core.utils import resource_path
 
 class studentFrom(object):
     """
@@ -23,7 +21,7 @@ class studentFrom(object):
     def setupUi(self, Dialog):
         Dialog.setObjectName("Dialog")
         Dialog.resize(670, 450)
-        Dialog.setWindowIcon(QIcon("assets/icons/student.png"))
+        Dialog.setWindowIcon(QIcon(str(resource_path("assets/icons/student.png"))))
         #------------windows size fixed----------------
         Dialog.setMinimumSize(QtCore.QSize(670, 450))
         Dialog.setMaximumSize(QtCore.QSize(670, 450))
@@ -154,7 +152,7 @@ class studentFrom(object):
 
             # ---------- Download button ----------
             btn = QPushButton("Download")
-            btn.setIcon(QIcon("assets/icons/download.png"))
+            btn.setIcon(QIcon(str(resource_path("assets/icons/download.png"))))
 
             if APP_ENV == "dev":
                 btn.clicked.connect(
