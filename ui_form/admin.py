@@ -1,6 +1,3 @@
-import sys
-from pathlib import Path
-sys.path.append(str(Path(__file__).resolve().parent.parent))
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtGui import QIcon
 from core.user_action import (
@@ -8,6 +5,7 @@ from core.user_action import (
      unblock_user, exists_user, is_block, is_unblock)
 from core.messages import MessageBox
 from core.config import APP_ENV
+from core.utils import resource_path
 
 
 class AdminForm(object):
@@ -15,7 +13,7 @@ class AdminForm(object):
         self.Form = Form
         Form.setObjectName("Form")
         Form.resize(603, 431)
-        Form.setWindowIcon(QIcon("assets/icons/admin.png"))
+        Form.setWindowIcon(QIcon(str(resource_path("assets/icons/admin.png"))))
         #------------windows size fixed----------------
         Form.setMinimumSize(QtCore.QSize(603, 431))
         Form.setMaximumSize(QtCore.QSize(603, 431))
@@ -110,9 +108,9 @@ class AdminForm(object):
         self.deleteuserButton.setGeometry(QtCore.QRect(452, 20, 111, 41))
         self.deleteuserButton.setObjectName("deleteuserButton")
         self.horizontalLayout_3.addWidget(self.groupBox_4)
-        self.createuserButton.setIcon(QIcon("assets/icons/create.png"))
-        self.commituserButton.setIcon(QIcon("assets/icons/commit.png"))
-        self.deleteuserButton.setIcon(QIcon("assets/icons/delete.png"))
+        self.createuserButton.setIcon(QIcon(str(resource_path("assets/icons/create.png"))))
+        self.commituserButton.setIcon(QIcon(str(resource_path("assets/icons/commit.png"))))
+        self.deleteuserButton.setIcon(QIcon(str(resource_path("assets/icons/delete.png"))))
         
         # updated the admin panel as given instructions
 

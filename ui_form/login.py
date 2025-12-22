@@ -1,6 +1,3 @@
-import sys
-from pathlib import Path
-sys.path.append(str(Path(__file__).resolve().parent.parent))
 from core.auth import authenticate
 from core.messages import MessageBox
 from ui_form.admin import AdminForm
@@ -8,6 +5,7 @@ from ui_form.professor import ProfessorForm
 from ui_form.student import studentFrom
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtGui import QIcon
+from core.utils import resource_path
 
 
 class LoginForm(object):
@@ -15,7 +13,7 @@ class LoginForm(object):
         self.Form = Form
         Form.setObjectName("Form")
         Form.resize(322, 147)
-        Form.setWindowIcon(QIcon("assets/icons/login.png"))
+        Form.setWindowIcon(QIcon(str(resource_path("assets/icons/login.png"))))
         #------------windows size fixed----------------
         Form.setMinimumSize(QtCore.QSize(322, 147))
         Form.setMaximumSize(QtCore.QSize(322, 147))

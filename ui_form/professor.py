@@ -1,6 +1,4 @@
-import sys
 from pathlib import Path
-sys.path.append(str(Path(__file__).resolve().parent.parent))
 from core.config import APP_ENV
 from core.config import BASE_SERVER
 from PyQt5 import QtCore, QtGui, QtWidgets
@@ -11,6 +9,7 @@ from core.messages import MessageBox
 from core.repositories.file_repo import create_document
 from PyQt5.QtGui import QIcon
 import requests
+from core.utils import resource_path
 
 
 class ProfessorForm(object):
@@ -22,7 +21,7 @@ class ProfessorForm(object):
         self.Form = Form
         Form.setObjectName("Form")
         Form.resize(571, 260)
-        Form.setWindowIcon(QIcon("assets/icons/professor.png"))
+        Form.setWindowIcon(QIcon(str(resource_path("assets/icons/professor.png"))))
         #------------windows size fixed----------------
         Form.setMinimumSize(QtCore.QSize(571, 260))
         Form.setMaximumSize(QtCore.QSize(571, 260))
@@ -65,8 +64,8 @@ class ProfessorForm(object):
         self.uploadpushButton_upload.setGeometry(QtCore.QRect(10, 190, 531, 41))
 
         self.horizontalLayout.addWidget(self.groupBox)
-        self.selectpushButton_upload.setIcon(QIcon("assets/icons/select.png"))
-        self.uploadpushButton_upload.setIcon(QIcon("assets/icons/upload.png"))
+        self.selectpushButton_upload.setIcon(QIcon(str(resource_path("assets/icons/select.png"))))
+        self.uploadpushButton_upload.setIcon(QIcon(str(resource_path("assets/icons/upload.png"))))
 
         # --- متغیر داخلی ---
         self.selected_file_path = None
@@ -126,15 +125,14 @@ class ProfessorForm(object):
             # =========================
             if APP_ENV == "dev":
                 import uuid
+                
+                storage_dir = Path.home() / "UniversityAppStorage" / file_type
+                storage_dir.mkdir(parents=True, exist_ok=True)
                 unique_suffix = uuid.uuid4().hex
                 destination_file_name = f"{unique_suffix}_{source_path.name}"
-
-                storage_dir = Path("storage") / file_type
-                storage_dir.mkdir(parents=True, exist_ok=True)
                 destination_path = storage_dir / destination_file_name
 
                 shutil.copy(self.selected_file_path, destination_path)
-
                 create_document(
                     title=title,
                     file_type=file_type,

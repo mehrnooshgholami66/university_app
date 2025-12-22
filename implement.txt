@@ -1,0 +1,9 @@
+DEV : exe
+pyinstaller --onefile --windowed --paths=./ --name UniversityApp --icon=assets/icons/final.ico ^
+--add-data "assets;assets" ^
+main.py
+
+
+
+PROD: exe
+pyinstaller --onefile --windowed --paths=./ --name UniversityApp --icon=assets/icons/final.ico --add-data "assets;assets" main.py
