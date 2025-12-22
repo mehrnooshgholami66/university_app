@@ -3,6 +3,8 @@ pyinstaller --onefile --windowed --paths=./ --name UniversityApp --icon=assets/i
 --add-data "assets;assets" ^
 main.py
 
+prod & dev implement
+
 
 
 PROD: exe
