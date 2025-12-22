@@ -91,7 +91,7 @@ class ProfessorForm(object):
         self.uploadnamelabel_upload.setText(_translate("Form", "upload name"))
         self.uploadpushButton_upload.setText(_translate("Form", "upload"))
 
-    # ----------------- متد انتخاب فایل -----------------
+    # ----------------- (متد انتخاب فایل) -----------------
     def select_file(self):
         file_path, _ = QFileDialog.getOpenFileName(
             self.Form, "Select file", "", "All Files (*.*)"
