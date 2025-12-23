@@ -13,9 +13,10 @@ from core.utils import resource_path
 
 
 class ProfessorForm(object):
-    def __init__(self, professor_id):
+    def __init__(self, professor_id, token):
         # professor_id از لاگین پاس داده می‌شود
         self.professor_id = professor_id
+        self.token = token
 
     def setupUi(self, Form):
         self.Form = Form
@@ -154,8 +155,11 @@ class ProfessorForm(object):
                         "file_type": file_type,
                         "professor": self.professor_id,
                     }
+                    headers = {
+                    "Authorization": f"Token {self.token}"
+                    }
 
-                    response = requests.post(url, data=data, files=files)
+                    response = requests.post(url, data=data, files=files, headers=headers)
 
                 if response.status_code != 201:
                     MessageBox.error(self.Form, f"Upload failed: {response.text}")

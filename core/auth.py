@@ -21,7 +21,7 @@ def authenticate(username, password):
 
         if not verify_password(password, hashed_password):
             return None  # پسورد اشتباه
-        user = user_id, role, is_active
+        user = user_id, role, is_active, "__no_token__"
         return user
     elif APP_ENV == "prod":
         response = requests.post(
@@ -31,6 +31,6 @@ def authenticate(username, password):
         if response.status_code != 200:
             return None  # خطا در احراز هویت
         data = response.json()
-        user = data.get("user_id"), data.get("role"), data.get("is_active")
+        user = data.get("user_id"), data.get("role"), data.get("is_active"), data.get("token")
         return user
 
