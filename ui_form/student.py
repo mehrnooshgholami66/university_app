@@ -36,12 +36,15 @@ class studentFrom(object):
         self.groupBox = QtWidgets.QGroupBox(self.verticalLayoutWidget)
         self.groupBox.setObjectName("groupBox")
         self.comboBox = QtWidgets.QComboBox(self.groupBox)
+        #==============================================311=============
         self.comboBox.setGeometry(QtCore.QRect(10, 20, 211, 21))
         self.comboBox.setObjectName("comboBox")
         self.label = QtWidgets.QLabel(self.groupBox)
+        #==================================350=============================
         self.label.setGeometry(QtCore.QRect(250, 20, 55, 16))
         self.label.setObjectName("label")
         self.lineEdit = QtWidgets.QLineEdit(self.groupBox)
+        #=====================================410=============================
         self.lineEdit.setGeometry(QtCore.QRect(310, 20, 191, 21))
         self.lineEdit.setObjectName("lineEdit")
         self.tableWidget = QtWidgets.QTableWidget(self.groupBox)
