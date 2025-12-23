@@ -212,6 +212,9 @@ class AdminForm(object):
     def create_user(self):
         username = self.inputusername_createuser.text()
         password = self.inputpassword_createuser.text()
+        if not username or not password or username == "" or password == "":
+            MessageBox.error(self.Form, "please enter username and password")
+            return
         if self.createstudent_radio.isChecked():
             role = "student"
         elif self.createprofessor_radio.isChecked():
