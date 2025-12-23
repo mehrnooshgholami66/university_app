@@ -14,7 +14,7 @@ APP_ENV = "dev"
 # ----------------------
 # اطلاعات سرور / API
 # ----------------------
-BASE_SERVER = "http://192.168.10.1"
+BASE_SERVER = "http://127.0.0.1:8000"
 API_URL_LOGIN = f"{BASE_SERVER}/api/auth/login/"
 API_CREATE_USER = f"{BASE_SERVER}/api/auth/create-user/"
 API_DOCUMENT_UPLOAD = f"{BASE_SERVER}/api/documents/upload/"
