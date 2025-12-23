@@ -36,7 +36,7 @@ class studentFrom(object):
         self.groupBox = QtWidgets.QGroupBox(self.verticalLayoutWidget)
         self.groupBox.setObjectName("groupBox")
         self.comboBox = QtWidgets.QComboBox(self.groupBox)
-        #==============================================311=============
+        #==============================================311================
         self.comboBox.setGeometry(QtCore.QRect(10, 20, 211, 21))
         self.comboBox.setObjectName("comboBox")
         self.label = QtWidgets.QLabel(self.groupBox)
