@@ -65,7 +65,7 @@ class LoginForm(object):
         if not user:
             MessageBox.error(self.Form, "The username or password is incorrect!")
             return
-        self.user_id, role, is_active = user
+        self.user_id, role, is_active, self.token = user
         if role == "admin" and is_active == 1:
             MessageBox.success(self.Form,"You have successfully logged in.",on_ok=self.show_admin_ui)
         elif role == "student" and is_active == 1:
@@ -81,21 +81,21 @@ class LoginForm(object):
     def show_admin_ui(self):
         self.Form.close()
         self.admin_window = QtWidgets.QWidget()
-        self.admin_ui = AdminForm()
+        self.admin_ui = AdminForm(token=self.token)
         self.admin_ui.setupUi(self.admin_window)
         self.admin_window.show()
         
     def show_student_ui(self):
         self.Form.close()
         self.student_window = QtWidgets.QWidget()
-        self.student_ui =studentFrom(student_id=self.user_id)
+        self.student_ui =studentFrom(student_id=self.user_id, token=self.token)
         self.student_ui.setupUi(self.student_window)
         self.student_window.show()
     
     def show_professor_ui(self):
         self.Form.close()
         self.professor_window = QtWidgets.QWidget()
-        self.professor_ui = ProfessorForm(professor_id=self.user_id)
+        self.professor_ui = ProfessorForm(professor_id=self.user_id, token=self.token)
         self.professor_ui.setupUi(self.professor_window)
         self.professor_window.show()
 

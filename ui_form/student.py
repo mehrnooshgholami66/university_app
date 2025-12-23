@@ -15,9 +15,10 @@ class studentFrom(object):
     """
     Student UI for download documents
     """
-    def __init__(self, student_id):
+    def __init__(self, student_id, token):
         # student_id از لاگین پاس داده می‌شود
         self.student_id = student_id
+        self.token = token
     def setupUi(self, Dialog):
         Dialog.setObjectName("Dialog")
         Dialog.resize(670, 450)
@@ -99,7 +100,7 @@ class studentFrom(object):
         else:
             self.professors_cache = [
                 (p["id"], p["username"])
-                for p in api_get_professors()
+                for p in api_get_professors(self.token)
             ]
 
         for pid, name in self.professors_cache:
@@ -124,7 +125,7 @@ class studentFrom(object):
             # خروجی dev:
             # (title, file_type, file_name, file_path)
         else:
-            documents = api_get_documents_by_professor(professor_id)
+            documents = api_get_documents_by_professor(professor_id, self.token)
             # خروجی prod:
             # dict
 

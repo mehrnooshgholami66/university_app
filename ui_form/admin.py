@@ -9,6 +9,8 @@ from core.utils import resource_path
 
 
 class AdminForm(object):
+    def __init__(self, token):
+        self.token = token
     def setupUi(self, Form):
         self.Form = Form
         Form.setObjectName("Form")
@@ -194,13 +196,13 @@ class AdminForm(object):
         else:
             if self.blockuser_radio.isChecked():
                 try:
-                    block_user(username)  
+                    block_user(username, self.token)  
                     MessageBox.success(self.Form, "operation completed successfully")
                 except:
                     MessageBox.error(self.Form, "operation failed in modifying user status . user dos not exist or already blocked")
             elif self.unblockuser_radio.isChecked():
                 try:
-                    unblock_user(username)  
+                    unblock_user(username, self.token)  
                     MessageBox.success(self.Form, "operation completed successfully")
                 except:
                     MessageBox.error(self.Form, "operation failed in modifying user status . user dos not exist or already unblocked")
@@ -210,6 +212,9 @@ class AdminForm(object):
     def create_user(self):
         username = self.inputusername_createuser.text()
         password = self.inputpassword_createuser.text()
+        if not username or not password or username == "" or password == "":
+            MessageBox.error(self.Form, "please enter username and password")
+            return
         if self.createstudent_radio.isChecked():
             role = "student"
         elif self.createprofessor_radio.isChecked():
@@ -217,11 +222,11 @@ class AdminForm(object):
         else:
             MessageBox.error(self.Form, "please select one of student or professor role")
             return
-        if exists_user(username):
+        if exists_user(username, self.token):
             MessageBox.error(self.Form, "user already exists")
             return
         try:
-            create_user_role(username, password, role)
+            create_user_role(username, password, role, self.token)
         except:
             MessageBox.error(self.Form, "username is already exists")
             return
@@ -246,7 +251,7 @@ class AdminForm(object):
             return
         else:
             try:
-                delete_user(username)  
+                delete_user(username, self.token)  
                 MessageBox.success(self.Form, "operation completed successfully")
             except:
                 MessageBox.error(self.Form, "operation failed in deleting user . user dos not exist")

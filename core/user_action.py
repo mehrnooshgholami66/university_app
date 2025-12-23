@@ -3,7 +3,7 @@ from core.config import APP_ENV, API_CREATE_USER, block_user_api, unblock_user_a
 from core.security import hash_password
 import requests
 
-def create_user_role(username, password, role):
+def create_user_role(username, password, role, token):
     if APP_ENV == "dev":
         conn = get_connection()
         cursor = conn.cursor()
@@ -14,15 +14,19 @@ def create_user_role(username, password, role):
         conn.commit()
         conn.close()
     elif APP_ENV == "prod":
+        headers = {
+                    "Authorization": f"Token {token}"
+                }
         response = requests.post(
             API_CREATE_USER,
-            json={"username": username, "password": password, "role": role}
+            json={"username": username, "password": password, "role": role},
+            headers=headers
         )
         if response.status_code != 201:
             raise Exception("Failed to create user in production environment")
 
 
-def block_user(username):
+def block_user(username, token):
     if APP_ENV == "dev":
         conn = get_connection()
         cursor = conn.cursor()
@@ -33,11 +37,15 @@ def block_user(username):
         conn.commit()
         conn.close()
     else:
-        response = requests.post(block_user_api(username))
+        headers = {
+                    "Authorization": f"Token {token}"
+                }
+
+        response = requests.post(block_user_api(username), headers=headers)
         if response.status_code != 200:
             raise Exception("Failed to unblock user in production environment")
 
-def unblock_user(username):
+def unblock_user(username, token):
     if APP_ENV == "dev":
         conn = get_connection()
         cursor = conn.cursor()
@@ -48,13 +56,16 @@ def unblock_user(username):
         conn.commit()
         conn.close()
     else:
-        response = requests.post(unblock_user_api(username))
+        headers = {
+                    "Authorization": f"Token {token}"
+                }
+        response = requests.post(unblock_user_api(username), headers=headers)
         if response.status_code != 200:
             raise Exception("Failed to unblock user in production environment")
     
 
 
-def delete_user(username):
+def delete_user(username, token):
     if APP_ENV == "dev":
         conn = get_connection()
         cursor = conn.cursor()
@@ -65,12 +76,15 @@ def delete_user(username):
         conn.commit()
         conn.close()
     else:
-        response = requests.delete(delete_user_api(username))
+        headers = {
+                    "Authorization": f"Token {token}"
+                }
+        response = requests.delete(delete_user_api(username), headers=headers)
         if response.status_code != 200:
             raise Exception("Failed to delete user in production environment")
 
 
-def exists_user(username):
+def exists_user(username, token):
     if APP_ENV == "dev":
         conn = get_connection()
         cursor = conn.cursor()
